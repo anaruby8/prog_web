@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestor de Almacén</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        table {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Gestor de Almacén</h2>
+
+    <table id="almacen">
+        <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Agregar al Carrito</th>
+        </tr>
+
+        <?php
+        // Conexión a la base de datos
+        $mysqli = new mysqli("localhost", "root", "", "almacen");
+    
+        // Verifica la conexión
+        if ($mysqli->connect_error) {
+            die("La conexión falló: " . $mysqli->connect_error);
+        }
+    
+        // Consulta para obtener los productos
+        $sql = "SELECT id, nombre, cantidad, precio FROM compra";
+        $resultado = $mysqli->query($sql);
+    
+        // Muestra cada fila de productos
+        if ($resultado->num_rows > 0) {
+            while($fila = $resultado->fetch_assoc()) {
+                echo "<tr><td>" . $fila["id"]. "</td><td>" . $fila["nombre"]. "</td><td>" . $fila["cantidad"] . "</td><td>" . $fila["precio"] . "</td><td><button onclick='agregarAlCarrito(" . $fila["id"] . ")'>Agregar</button></td></tr>";
+            }
+        } else {
+            echo "<tr><td colspan='5'>No hay productos</td></tr>";
+        }
+        $mysqli->close();
+        ?>
+
+    </table>
+<h2>Carrito</h2>
+<ul id="carrito">
+    <!-- Los elementos del carrito aparecerán aquí -->
+</ul>
+
+<button onclick="realizarCompra()">Realizar Compra</button>
+
+<script>
+    function agregarAlCarrito(idProducto) {
+        // Función para agregar productos al carrito
+        // Esta es una implementación simplificada
+        var lista = document.getElementById("carrito");
+        var item = document.createElement("li");
+        item.appendChild(document.createTextNode("Producto " + idProducto));
+        lista.appendChild(item);
+    }
+
+    function realizarCompra() {
+        // Función para realizar la compra
+        // Aquí deberías enviar la información al servidor para procesar la compra
+        alert("Compra realizada. (Simulación)");
+    }
+</script>
+
+</body>
+</html>
