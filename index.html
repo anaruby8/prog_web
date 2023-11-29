@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Gestión de Inventario</title>
+    <meta charset="UTF-8">
+    <title>Gestion de Inventario</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="script.js"></script>
 </head>
 <body>
 
+    <header>
+        <img src="https://static.vecteezy.com/system/resources/previews/019/046/815/non_2x/sport-shoes-symbol-png.png" alt="nada">
+        <h1>Zapatos 'The Tilines'</h1>
+    </header>
+
+
 <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'Proveedores')">Proveedores</button>
-    <button class="tablinks" onclick="openTab(event, 'Almacen')">Almacén</button>
+    <button class="tablinks" onclick="openTab(event, 'Almacen')">Almacen</button>
     <button class="tablinks" onclick="openTab(event, 'Compras')">Compras</button>
     <button class="tablinks" onclick="openTab(event, 'Ventas')">Ventas</button>
 </div>
@@ -26,9 +33,12 @@
 <div id="Proveedores" class="tabcontent">
     <h3>Agregar Proveedor</h3>
     <form action="agregarProveedor.php" method="post" onsubmit="enviarFormularioProveedor(event)">
-        Nombre: <input type="text" name="nombre" required><br>
-        Dirección: <input type="text" name="direccion"><br>
-        Teléfono: <input type="text" name="telefono"><br>
+        Nombre: 
+        <div><input type="text" name="nombre" required><br></div>
+        Dirección: 
+        <div><input type="text" name="direccion"><br></div>
+        Teléfono: 
+        <div><input type="text" name="telefono"><br></div>
         <input type="submit" value="Agregar">
     </form>
 </div>
@@ -36,11 +46,15 @@
 <!-- Dentro de la pestaña Almacén -->
 <div id="Almacen" class="tabcontent">
     <h3>Agregar Productos al Almacén</h3>
-    <form action="agregarProducto.php" method="post">
-        Descripción: <input type="text" name="descripcion" required><br>
-        Mínimo: <input type="number" name="min" required><br>
-        Máximo: <input type="number" name="maximo" required><br>
-        Stock: <input type="number" name="stock" required><br>
+    <form action="agregarProducto.php" method="post" onsubmit="enviarFormularioAlmacen(event)">
+        Descripción: 
+        <div><input type="text" name="descripcion" required><br></div>
+        Mínimo: 
+        <div><input type="number" name="min" required><br></div>
+        Máximo: 
+        <div><input type="number" name="maximo" required><br></div>
+        Stock: 
+        <div><input type="number" name="stock" required><br></div>
         <input type="submit" value="Agregar">
     </form>
 </div>
@@ -49,11 +63,15 @@
 <!-- Dentro de la pestaña Compras -->
 <div id="Compras" class="tabcontent">
     <h3>Registrar Compra</h3>
-    <form action="agregarCompra.php" method="post">
-        ID Producto: <input type="number" name="idproducto" required><br>
-        ID Proveedor: <input type="number" name="idproveedor" required><br>
-        Cantidad: <input type="number" name="cantidad" required><br>
-        Precio: <input type="number" name="precio" step="0.01" required><br>
+    <form action="agregarCompra.php" method="post" onsubmit="enviarFormularioCompra(event)">
+        ID Producto: 
+        <div><input type="number" name="idproducto" required><br></div>
+        ID Proveedor: 
+        <div><input type="number" name="idproveedor" required><br></div>
+        Cantidad: 
+        <div><input type="number" name="cantidad" required><br></div>
+        Precio: 
+        <div><input type="number" name="precio" step="0.01" required><br></div>
         <input type="submit" value="Agregar">
     </form>
 </div>
@@ -61,11 +79,15 @@
 <!-- Dentro de la pestaña Ventas -->
 <div id="Ventas" class="tabcontent">
     <h3>Registrar Venta</h3>
-    <form action="agregarVenta.php" method="post">
-        Fecha (YYYY-MM-DD): <input type="date" name="fecha" required><br>
-        Hora (HH:MM): <input type="time" name="hora" required><br>
-        ID Producto: <input type="number" name="idproducto" required><br>
-        Cantidad: <input type="number" name="cantidad" required><br>
+    <form action="agregarVenta.php" method="post" onsubmit="enviarFormularioVenta(event)">
+        Fecha (YYYY-MM-DD): 
+        <div><input type="date" name="fecha" required><br></div>
+        Hora (HH:MM): 
+        <div><input type="time" name="hora" required><br></div>
+        ID Producto: 
+        <div><input type="number" name="idproducto" required><br></div>
+        Cantidad: 
+        <div><input type="number" name="cantidad" required><br></div>
         <input type="submit" value="Agregar">
     </form>
 </div>
@@ -91,6 +113,51 @@ function enviarFormularioProveedor(event) {
     const formData = new FormData(event.target);
 
     fetch('agregarProveedor.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('mensajeModal').innerText = data;
+        mostrarModal();
+    });
+}
+
+function enviarFormularioAlmacen(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    fetch('agregarProducto.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('mensajeModal').innerText = data;
+        mostrarModal();
+    });
+}
+
+function enviarFormularioCompra(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    fetch('agregarCompra.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('mensajeModal').innerText = data;
+        mostrarModal();
+    });
+}
+
+function enviarFormularioVenta(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    fetch('agregarVenta.php', {
         method: 'POST',
         body: formData
     })

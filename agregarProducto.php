@@ -11,10 +11,11 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("siii", $descripcion, $min, $maximo, $stock);
 
 if ($stmt->execute()) {
-    echo "Producto agregado con éxito";
+    echo " Producto agregado al almacén con éxito";
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo " Error al agregar producto al almacén: " . $conn->error;
 }
 
 $conn->close();
 ?>
+
