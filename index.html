@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestión de Inventario</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body>
+
+<div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'Proveedores')">Proveedores</button>
+    <button class="tablinks" onclick="openTab(event, 'Almacen')">Almacén</button>
+    <button class="tablinks" onclick="openTab(event, 'Compras')">Compras</button>
+    <button class="tablinks" onclick="openTab(event, 'Ventas')">Ventas</button>
+</div>
+
+<!-- Ventana Modal -->
+<div id="modalMensaje" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="mensajeModal"></p>
+    </div>
+</div>
+
+<!-- Dentro de la pestaña Proveedores -->
+<div id="Proveedores" class="tabcontent">
+    <h3>Agregar Proveedor</h3>
+    <form action="agregarProveedor.php" method="post" onsubmit="enviarFormularioProveedor(event)">
+        Nombre: <input type="text" name="nombre" required><br>
+        Dirección: <input type="text" name="direccion"><br>
+        Teléfono: <input type="text" name="telefono"><br>
+        <input type="submit" value="Agregar">
+    </form>
+</div>
+
+<!-- Dentro de la pestaña Almacén -->
+<div id="Almacen" class="tabcontent">
+    <h3>Agregar Productos al Almacén</h3>
+    <form action="agregarProducto.php" method="post">
+        Descripción: <input type="text" name="descripcion" required><br>
+        Mínimo: <input type="number" name="min" required><br>
+        Máximo: <input type="number" name="maximo" required><br>
+        Stock: <input type="number" name="stock" required><br>
+        <input type="submit" value="Agregar">
+    </form>
+</div>
+
+
+<!-- Dentro de la pestaña Compras -->
+<div id="Compras" class="tabcontent">
+    <h3>Registrar Compra</h3>
+    <form action="agregarCompra.php" method="post">
+        ID Producto: <input type="number" name="idproducto" required><br>
+        ID Proveedor: <input type="number" name="idproveedor" required><br>
+        Cantidad: <input type="number" name="cantidad" required><br>
+        Precio: <input type="number" name="precio" step="0.01" required><br>
+        <input type="submit" value="Agregar">
+    </form>
+</div>
+
+<!-- Dentro de la pestaña Ventas -->
+<div id="Ventas" class="tabcontent">
+    <h3>Registrar Venta</h3>
+    <form action="agregarVenta.php" method="post">
+        Fecha (YYYY-MM-DD): <input type="date" name="fecha" required><br>
+        Hora (HH:MM): <input type="time" name="hora" required><br>
+        ID Producto: <input type="number" name="idproducto" required><br>
+        Cantidad: <input type="number" name="cantidad" required><br>
+        <input type="submit" value="Agregar">
+    </form>
+</div>
+
+
+<script>
+    function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+function enviarFormularioProveedor(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    fetch('agregarProveedor.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('mensajeModal').innerText = data;
+        mostrarModal();
+    });
+}
+
+function mostrarModal() {
+    var modal = document.getElementById("modalMensaje");
+    var span = document.getElementsByClassName("close")[0];
+
+    modal.style.display = "block";
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+}
+
+
+</script>
+
+</body>
+</html>
